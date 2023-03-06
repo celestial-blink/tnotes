@@ -1,6 +1,7 @@
+import cors from "cors";
 import * as dotenv from 'dotenv';
 import path from 'path';
-dotenv.config({path: path.resolve(__dirname, "../.env")});
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
 import express, { Express } from 'express';
 import config from './config';
 import router from './router';
@@ -9,6 +10,16 @@ import initialize from './passport';
 import { logError, ornError, boomError, responseError } from './middleware/error';
 
 const app: Express = express();
+
+app.use(cors({
+    origin(requestOrigin, callback) {
+        if (["http://localhost:1111"].includes(requestOrigin ?? "") || !requestOrigin) {
+            callback(null, true);
+        } else {
+            callback(new Error('no permitido'));
+        }
+    },
+}));
 
 connect().then(_ => {
     console.log("connected to mongo atlas!");

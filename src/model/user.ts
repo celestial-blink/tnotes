@@ -2,13 +2,13 @@ import { model, Schema } from "mongoose";
 import { hash } from 'bcrypt';
 
 interface IUser {
-    _id: any,
-    name: string;
-    lastname: string,
-    email: string,
+    _id?: any,
+    name?: string;
+    lastname?: string,
+    email?: string,
     password: string,
-    createdAt: any,
-    updatedAt: any
+    createdAt?: any,
+    updatedAt?: any
 }
 
 const userSchema = new Schema<IUser>({

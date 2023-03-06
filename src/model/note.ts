@@ -1,11 +1,12 @@
 import { model, Schema } from "mongoose";
 
-interface INote {
+export interface INote {
+    _id?: any,
     title: string;
     description: string;
-    idUser: Schema.Types.ObjectId;
+    idUser?: Schema.Types.ObjectId;
     isDraft: boolean;
-    createAt: Date;
+    createAt?: any;
 };
 
 const noteSchema = new Schema<INote>({
@@ -27,6 +28,6 @@ const noteSchema = new Schema<INote>({
     }
 }, { timestamps: { createdAt: true } });
 
-const note = model("note", noteSchema);
+const Note = model("note", noteSchema);
 
-export default note;
+export default Note;

@@ -1,11 +1,12 @@
 import { model, Schema } from "mongoose";
 
-interface ITask {
-    title: string;
-    description: string;
-    idUser: Schema.Types.ObjectId;
-    isDraft: boolean;
-    createAt: Date;
+export interface ITask {
+    _id?: any,
+    title?: string;
+    description?: string;
+    idUser?: Schema.Types.ObjectId;
+    isDraft?: boolean;
+    createAt?: any;
 }
 
 const taskSchema = new Schema<ITask>({
@@ -27,6 +28,6 @@ const taskSchema = new Schema<ITask>({
     }
 }, { timestamps: { createdAt: true } });
 
-const task = model("task", taskSchema);
+const Task = model("task", taskSchema);
 
-export default task;
+export default Task;
