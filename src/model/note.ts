@@ -1,26 +1,28 @@
 import { model, Schema } from "mongoose";
 
 export interface INote {
-    _id?: any,
+    _id: Schema.Types.ObjectId;
+    idUser: Schema.Types.ObjectId;
     title: string;
     description: string;
-    idUser?: Schema.Types.ObjectId;
     isDraft: boolean;
-    createAt?: any;
+    createAt: Date;
 };
 
 const noteSchema = new Schema<INote>({
-    title: {
-        type: String,
-        required: true
-    },
-    description: {
-        type: String
-    },
     idUser: {
         type: Schema.Types.ObjectId,
         ref: 'user',
-        required: true
+        required: true,
+    },
+    title: {
+        type: String,
+        required: true,
+        maxlength: 120
+    },
+    description: {
+        type: String,
+        maxlength: 500
     },
     isDraft: {
         type: Boolean,

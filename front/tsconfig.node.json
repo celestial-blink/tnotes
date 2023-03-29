@@ -3,28 +3,7 @@
         "composite": true,
         "module": "ESNext",
         "moduleResolution": "Node",
-        "allowSyntheticDefaultImports": true,
-        "baseUrl": ".",
-        "paths": {
-            "@components": [
-                "./src/helpers/"
-            ],
-            "@helpers": [
-                "./src/styles/"
-            ],
-            "@hooks": [
-                "./src/scripts/"
-            ],
-            "@contexts": [
-                "./src/assets/"
-            ],
-            "@views": [
-                "./src/assets/"
-            ],
-            "@assets": [
-                "./src/assets/"
-            ]
-        }
+        "allowSyntheticDefaultImports": true
     },
     "include": [
         "vite.config.ts"

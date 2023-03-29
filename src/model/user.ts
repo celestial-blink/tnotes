@@ -1,26 +1,27 @@
 import { model, Schema } from "mongoose";
 import { hash } from 'bcrypt';
 
-interface IUser {
-    _id?: any,
-    name?: string;
-    lastname?: string,
-    email?: string,
+export interface IUser {
+    _id: Schema.Types.ObjectId,
+    name: string;
+    lastname: string,
+    email: string,
     password: string,
-    createdAt?: any,
-    updatedAt?: any
+    createdAt: Date,
 }
 
 const userSchema = new Schema<IUser>({
     name: {
         type: String,
         trim: true,
-        default: ""
+        default: "",
+        maxlength: 30
     },
     lastname: {
         type: String,
         trim: true,
-        default: ""
+        default: "",
+        maxlength: 30
     },
     email: {
         type: String,

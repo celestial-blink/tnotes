@@ -8,6 +8,8 @@ import router from './router';
 import { connect } from './services/db';
 import initialize from './passport';
 import { logError, ornError, boomError, responseError } from './middleware/error';
+import { auth } from "./middleware/auth";
+import cookieParser from "cookie-parser";
 
 const app: Express = express();
 
@@ -29,8 +31,12 @@ connect().then(_ => {
 
 initialize();
 
+app.use(cookieParser());
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(auth);
 
 router(app);
 
