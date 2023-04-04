@@ -14,10 +14,13 @@ import Home from "@components/Home";
 import Task from "@components/Task";
 import Note from "@components/Note";
 
+import { LoaderSession } from "./Loaders";
+
 const Routes = createBrowserRouter([
     {
         path: "/",
         element: <Dashboard />,
+        loader: LoaderSession,
         id: "root",
         children: [
             {

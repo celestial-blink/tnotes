@@ -1,0 +1,1 @@
+type abortSignal = AbortSignal | null;

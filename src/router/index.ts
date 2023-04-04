@@ -5,10 +5,10 @@ import user from "./user";
 import auth from "./auth";
 
 const router = (server: Express) => {
-    server.use("/note", note);
-    server.use("/task", task);
-    server.use("/user", user);
-    server.use("/auth", auth);
+    server.use("/api/note", note);
+    server.use("/api/task", task);
+    server.use("/api/user", user);
+    server.use("/api/auth", auth);
 }
 
 export default router;

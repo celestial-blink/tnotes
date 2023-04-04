@@ -1,5 +1,5 @@
 const config = {
-    PATH_BASE_API: "http://localhost:1112/",
+    PATH_BASE_API: "/api/",
 };
 
 export default config;

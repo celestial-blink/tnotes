@@ -114,7 +114,7 @@ user.get("/refresh_token", async (req: Request, res: Response, next) => {
 });
 
 
-user.get("/my-session", passport.authenticate("jwt", { session: false }),
+user.get("/my_session", passport.authenticate("jwt", { session: false }),
     (req: Request, res: Response) => {
         const { sub, name } = req.user as { sub: string, name: string };
         response(res, {

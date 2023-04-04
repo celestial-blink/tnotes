@@ -8,6 +8,7 @@ export interface IPayload {
 }
 
 const response = (res: Response, payload: IPayload) => {
+    console.log(payload);
     res.json(payload);
 }
 
