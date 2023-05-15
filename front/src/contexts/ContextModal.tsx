@@ -1,16 +1,14 @@
 import { createContext, useContext, useReducer } from "react";
 import type { ReactNode } from "react";
 
-// setShow: Dispatch<SetStateAction<boolean>>
-
-type TypeComponent = ReactNode;
+type TypeComponent = ReactNode | null;
 
 interface IContextModal {
-    show: boolean,
-    setShow(payload: boolean): void,
-    component: TypeComponent,
-    setComponent(payload: TypeComponent): void,
-    toggleShow(): void
+    show: boolean;
+    setShow(payload: boolean): void;
+    component: TypeComponent;
+    setComponent(payload: TypeComponent): void;
+    toggleShow(): void;
 }
 
 const initialValues: IStateReducer = {
@@ -24,32 +22,28 @@ enum Types {
 };
 
 interface IActionReducer {
-    type: Types,
-    payload: boolean | TypeComponent
+    type: Types;
+    payload: boolean | TypeComponent;
 };
 
 interface IStateReducer {
-    show: boolean,
-    component: TypeComponent
+    show: boolean;
+    component: TypeComponent;
 }
 
 const reducer = (state: IStateReducer, action: IActionReducer): IStateReducer => {
     const reducers = {
-        set_show: (state: IStateReducer, action: IActionReducer): IStateReducer => ({ ...state, show: action.payload as boolean }),
-        set_component: (state: IStateReducer, action: IActionReducer): IStateReducer => ({ ...state, component: action.payload as TypeComponent })
+        set_show: (state: IStateReducer, action: IActionReducer): IStateReducer => ({ ...state, show: !!action.payload }),
+        set_component: (state: IStateReducer, action: IActionReducer): IStateReducer => ({ ...state, component: action.payload })
     };
     return reducers[action.type]?.(state, action) ?? state;
 };
 
-export const ContextModal = createContext<IContextModal>({
-    show: false, setShow() { },
-    component: null, setComponent() { },
-    toggleShow() { }
-});
+export const ContextModal = createContext<IContextModal | any>({});
 
 export const useContextModal = (): IContextModal => {
     const contextModal = useContext(ContextModal);
-    return contextModal;
+    return contextModal as IContextModal;
 }
 
 const ContextModalProvider = ({ children }: { children: ReactNode }) => {

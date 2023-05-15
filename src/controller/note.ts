@@ -6,47 +6,58 @@ export const create = async (payload: INote) => {
     return _id;
 }
 
-interface IUpdate {
-    _id: string,
+interface IPayloadNotes {
+    _id: string;
+    idUser: string;
+}
+
+interface IUpdate extends IPayloadNotes {
     data: object
 }
 
 export const update = async (payload: IUpdate) => {
-    const result = Note.findByIdAndUpdate(payload._id, payload.data, { projection: { _id: 1 } });
+    const result = Note.findOneAndUpdate({ _id: payload._id, idUser: payload.idUser }, payload.data, { projection: { _id: 1 } })
     return result;
 }
 
-interface IDelete {
-    _id: string
-}
+interface IDelete extends IPayloadNotes { }
 
 export const remove = async (payload: IDelete) => {
-    const result = Note.findOneAndDelete({ _id: payload._id });
+    const result = Note.findOneAndDelete({ _id: payload._id, idUser: payload.idUser }, { projection: { _id: 1 } });
     return result;
 }
 
 interface IFilter {
-    match?: object,
-    project?: object,
-    sort?: any,
-    skip?: number,
-    limit?: number
+    match: object,
+    project: object,
+    sort: any,
+    skip: number,
+    limit: number,
 }
 
-export const filter = (payload: IFilter) => {
-    const result = Note.aggregate([
+export const filter = async (payload: IFilter) => {
+    const result = await Note.aggregate([
+        { $match: payload.match || {} },
+        { $project: payload.project },
+        { $sort: payload.sort || {} },
+        { $skip: payload.skip || 0 },
+        { $limit: payload.limit || 10 }
+    ]);
+
+    return result;
+}
+
+export const totalFilter = async (payload: IFilter) => {
+    const total = await Note.aggregate<{ total: number, totalPages: number }>([
         { $match: payload?.match ?? {} },
-        { $project: payload?.project ?? {} },
-        { $sort: payload?.sort ?? {} },
-        { $skip: payload?.skip ?? 0 },
-        { $limit: payload?.limit ?? 10 },
+        { $project: { _id: 1 } },
         { $count: "total" },
         {
             $addFields: {
-                perPage: { $ceil: { $divide: ["$total", payload?.limit ?? 10] } },
-                currentPage: (payload?.skip ?? 0) + 1
+                totalPages: { $ceil: { $divide: ["$total", payload.limit] } },
             }
         }
     ]);
-    return result;
+
+    return total;
 }

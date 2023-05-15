@@ -1,7 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import Welcome from "@views/welcome";
 
-
 import Auth from "@views/Auth";
 import FormLogin from "@components/FormLogin";
 import FormRegister from "@components/FormRegister";
@@ -13,8 +12,9 @@ import Dashboard from "@views/Dashboard";
 import Home from "@components/Home";
 import Task from "@components/Task";
 import Note from "@components/Note";
+import Config from "@components/Config";
 
-import { LoaderSession } from "./Loaders";
+import { LoaderSession, loaderNote, loaderTask } from "./Loaders";
 
 const Routes = createBrowserRouter([
     {
@@ -25,20 +25,26 @@ const Routes = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <Navigate to={"/home"} replace />,
+                element: <Navigate to={"/home"} replace />
             },
             {
                 path: "home",
-                element: <Home />,
+                element: <Home />
             },
             {
-                path: "task",
+                path: "task/:is_pending?",
+                loader: loaderTask,
                 element: <Task />
             },
             {
                 path: "note",
+                loader: loaderNote,
                 element: <Note />
             },
+            {
+                path: "config",
+                element: <Config />
+            }
         ]
     },
     {

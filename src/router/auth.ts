@@ -1,14 +1,18 @@
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import passport from "passport";
+import { Types } from "mongoose";
 import response from "../core/response";
-import { register } from "../controller/user";
-import jwt, { JwtPayload, verify } from "jsonwebtoken";
+import { register, filter, validatePassword } from "../controller/user";
+import jwt, { verify } from "jsonwebtoken";
 import config from "../config";
 import crypto from "crypto";
+import { compare } from 'bcrypt';
 import boom from "@hapi/boom";
-
+import { refreshToken } from "../middleware/auth";
 
 import type { IUser } from "../model/user";
+
+export type TypePayloadToken = { sub: string, name: string };
 
 const generateIv = (): string => {
     let iv: Buffer | string = crypto.randomBytes(16);
@@ -45,7 +49,7 @@ const user: Router = Router();
 user.post("/login", passport.authenticate('local', { session: false }), async (req: Request, res: Response, next) => {
     try {
         const { _id, name } = req.user as Pick<IUser, "_id" | "name">;
-        const payload: JwtPayload = {
+        const payload: TypePayloadToken = {
             sub: _id.toString(),
             name: name,
         }
@@ -62,7 +66,7 @@ user.post("/login", passport.authenticate('local', { session: false }), async (r
         res.cookie("iv", iv, { maxAge: Date.now() + (2 * 24 * 60 * 60 * 1000), httpOnly: true, secure: true });
         res.cookie("tag", tag, { maxAge: Date.now() + (2 * 24 * 60 * 60 * 1000), httpOnly: true, secure: true });
 
-        response(res, {
+        response(req, res, {
             data: { token },
             message: "",
             state: true
@@ -72,9 +76,9 @@ user.post("/login", passport.authenticate('local', { session: false }), async (r
 
 user.post("/register", async (req: Request, res: Response, next) => {
     try {
-        const { email, password } = req.body;
-        const result = await register({ email, password });
-        response(res, {
+        const { email, password, name } = req.body;
+        const result = await register({ email, password, name });
+        response(req, res, {
             data: result,
             message: "",
             state: true
@@ -105,7 +109,7 @@ user.get("/refresh_token", async (req: Request, res: Response, next) => {
         res.cookie("iv", newIv, { maxAge: Date.now() + (2 * 24 * 60 * 60 * 1000), httpOnly: true, secure: true });
         res.cookie("tag", newTag, { maxAge: Date.now() + (2 * 24 * 60 * 60 * 1000), httpOnly: true, secure: true });
 
-        response(res, {
+        response(req, res, {
             data: { token },
             message: "",
             state: true
@@ -113,15 +117,52 @@ user.get("/refresh_token", async (req: Request, res: Response, next) => {
     } catch (error) { next(error); }
 });
 
-
-user.get("/my_session", passport.authenticate("jwt", { session: false }),
-    (req: Request, res: Response) => {
-        const { sub, name } = req.user as { sub: string, name: string };
-        response(res, {
-            data: { sub, name },
+user.get("/my_session", refreshToken,
+    async (req: Request, res: Response) => {
+        const { sub } = req.user as TypePayloadToken;
+        const name = await filter({
+            project: { name: 1, email: 1 },
+            limit: 1,
+            match: { _id: new Types.ObjectId(sub) },
+            skip: 0,
+            sort: { _id: 1 }
+        });
+        response(req, res, {
+            data: { sub, name: name[0].name, email: name[0].email },
             message: "",
             state: true
         });
+    }
+);
+
+
+user.get("/logout", (req: Request, res: Response) => {
+    const mdate = Date.now() - 1;
+    res.cookie("refresh_token", "", { maxAge: mdate, httpOnly: true, secure: true });
+    res.cookie("iv", "", { maxAge: mdate, httpOnly: true, secure: true });
+    res.cookie("tag", "", { maxAge: mdate, httpOnly: true, secure: true });
+
+    response(req, res, {
+        data: "",
+        message: "",
+        state: true
+    })
+});
+
+user.post("/confirm_password", refreshToken,
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { sub } = req.user as TypePayloadToken;
+            const result = await validatePassword({ _id: sub });
+            const isMatch = await compare(req.body.password, result?.password ?? "");
+            if (!isMatch) throw boom.badRequest("Contraseñas incorrectos");
+            response(req, res, {
+                data: "",
+                message: "",
+                state: true
+            });
+        } catch (error) { next(error); }
+
     }
 );
 

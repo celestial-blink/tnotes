@@ -4,7 +4,6 @@ import { hash } from 'bcrypt';
 export interface IUser {
     _id: Schema.Types.ObjectId,
     name: string;
-    lastname: string,
     email: string,
     password: string,
     createdAt: Date,
@@ -15,13 +14,8 @@ const userSchema = new Schema<IUser>({
         type: String,
         trim: true,
         default: "",
-        maxlength: 30
-    },
-    lastname: {
-        type: String,
-        trim: true,
-        default: "",
-        maxlength: 30
+        minlength: 3,
+        maxlength: 40
     },
     email: {
         type: String,
@@ -32,15 +26,16 @@ const userSchema = new Schema<IUser>({
     password: {
         type: String,
         required: true,
-        min: [8, "Minino 8 caracteres"],
+        minlength: 8,
+        maxlength: 40
     }
 }, { timestamps: { createdAt: true } });
 
 userSchema.pre('save', async function (next) {
-    if (!this.isModified("password")) return next();
+    if (!this.isModified("password")) return next(); // is la contraseña no ha sido modificada
     this.password = await hash(this.password, 10);
     next();
-})
+});
 
 const User = model("user", userSchema);
 

@@ -4,7 +4,9 @@ import boom from "@hapi/boom";
 
 import { login } from '../controller/user';
 
-const local = new Strategy(async (username, password, done) => {
+const local = new Strategy({
+    usernameField: "email"
+},async (username, password, done) => {
     try {
         const user = await login({ email: username });
         if (!user) return done(boom.forbidden(), false);

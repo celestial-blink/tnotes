@@ -7,6 +7,7 @@ export interface INote {
     description: string;
     isDraft: boolean;
     createAt: Date;
+    updateAt: Date;
 };
 
 const noteSchema = new Schema<INote>({

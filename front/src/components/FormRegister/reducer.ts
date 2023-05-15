@@ -1,4 +1,5 @@
 interface IInitialValues {
+    name: string;
     email: string;
     password: string;
     repeat_password: string;
@@ -15,7 +16,8 @@ interface IActionReducer {
     payload: string;
 }
 
-export const initialState:IInitialValues = {
+export const initialState: IInitialValues = {
+    name: "",
     email: "",
     password: "",
     repeat_password: ""

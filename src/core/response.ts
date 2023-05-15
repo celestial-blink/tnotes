@@ -1,4 +1,5 @@
 import { Response } from "express";
+import type { Request } from "express";
 
 export interface IPayload {
     state: boolean,
@@ -7,8 +8,8 @@ export interface IPayload {
     optional?: object
 }
 
-const response = (res: Response, payload: IPayload) => {
-    console.log(payload);
+const response = (req: Request, res: Response, payload: IPayload) => {
+    if (req?.token) payload.data.token = req.token;
     res.json(payload);
 }
 

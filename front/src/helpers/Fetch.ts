@@ -1,62 +1,80 @@
 import config from "@/config";
 import Storage from "./Storage";
 
+const mstorage = new Storage();
+
 interface IParams {
     url: string;
     requestInit: RequestInit
 };
 
-interface IResponse<T> {
+export interface IResponse<T> {
     state: boolean;
     data: T;
     message: string;
-    optional: object;
+    optional?: object;
 };
 
 class Fetch {
     private url: string = "";
     private requestInit: RequestInit | undefined = undefined;
 
-    async setFetch<T>(payload: IParams): Promise<IResponse<T>> {
+    async setFetch<T = any>(payload: IParams): Promise<IResponse<T>> {
         this.url = payload.url;
         this.requestInit = payload.requestInit;
-        if ((this.requestInit.method?.toLowerCase() ?? "") !== "get") {
-            this.requestInit.body = JSON.stringify(this.requestInit.body);
-        }
+        this.requestInit.headers = { ...(this.requestInit.headers ?? {}), 'Content-Type': 'application/json', 'Authorization': `Bearer ${mstorage.getValue("token")}` };
+        this.requestInit.credentials = "same-origin";
         return await this.run<IResponse<T>>();
     }
 
-    private async run<T>(): Promise<T> {
-        let json: Object = {};
+    private async run<T = any>(): Promise<T> {
         try {
             const api = await fetch(this.url, this.requestInit);
-            if (api.status === 401) {
-                const refresh = await this.refreshToken();
-                if (refresh) this.run<IResponse<T>>();
-            }
-            json = await api.json();
-        } catch (error) {
+            // if (!api.ok && api.status === 403) throw new Error(api.statusText || "Forbidden");
+            // if (api.status === 401) {
+            //     const refresh = await this.refreshToken();
+            //     if (refresh) return this.run<IResponse<T>>() as T;
+            // }
+            const json = await api.json();
+            const prepareResponse = { ...json };
+            if (prepareResponse?.data.token) this.setRefreshToken(prepareResponse.data.token);
+            return prepareResponse as T;
+        } catch (error: Error | any) {
             console.error(error);
-            json = {
+            const json = {
                 state: false,
                 data: {},
-                message: "",
+                message: error?.message ?? "",
                 optional: {}
             }
-        } finally {
-            return json as T;
+            return { ...json } as T;
+        }
+    }
+
+    private setRefreshToken(payload: string) {
+        mstorage.setValue({
+            key: "token",
+            value: payload
+        });
+        if (this.requestInit) {
+            this.requestInit.headers = { ...(this.requestInit?.headers ?? {}), 'Authorization': `Bearer ${payload}` };
         }
     }
 
     private async refreshToken() {
-        const mstorage = new Storage();
-        const fetchData = await fetch(config.PATH_BASE_API + "refresh_token");
+        const fetchData = await fetch(config.PATH_BASE_API + "auth/refresh_token");
         const json = await fetchData.json();
-        mstorage.setValue({
-            key: "token",
-            value: json.data.token
-        });
-        return json?.state ?? false;
+        if (json?.state) {
+            mstorage.setValue({
+                key: "token",
+                value: json.data.token
+            });
+            if (this.requestInit) {
+                this.requestInit.headers = { ...(this.requestInit?.headers ?? {}), 'Authorization': `Bearer ${json.data.token}` };
+            }
+            return json.state;
+        }
+        return false;
     }
 };
 

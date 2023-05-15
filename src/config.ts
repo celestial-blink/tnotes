@@ -4,7 +4,7 @@ interface IConfig {
     port: number;
     jwt_secret: string;
     jwt_secret_refresh: string;
-    moongose_limit: number
+    moongose_limit: number;
 }
 
 const config: IConfig = {

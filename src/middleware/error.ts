@@ -8,9 +8,11 @@ export const logError = (err: any, req: Request, res: Response, next: NextFuncti
 };
 
 export const ornError = (err: any, req: Request, res: Response, next: NextFunction) => {
+    console.log("is ornError");
+
     if (err instanceof Error.ValidationError) {
         res.status(409);
-        response(res, {
+        response(req, res, {
             state: false,
             data: {},
             message: err.message
@@ -20,17 +22,26 @@ export const ornError = (err: any, req: Request, res: Response, next: NextFuncti
 };
 
 export const boomError = (err: any, req: Request, res: Response, next: NextFunction) => {
+    console.log("is boomError");
+
     if (err.isBoom) {
-      const { output } = err;
-      res.status(output.statusCode).json(output.payload);
+        const { output } = err;
+        res.status(output.statusCode);
+        response(req, res, {
+            state: false,
+            data: {},
+            message: err.message
+        });
     } else {
-      next(err);
+        next(err);
     }
-  }
+}
 
 export const responseError = (err: any, req: Request, res: Response, next: NextFunction) => {
+    console.log("is responseError");
+
     res.status(500);
-    response(res, {
+    response(req, res, {
         state: false,
         data: {},
         message: err.message

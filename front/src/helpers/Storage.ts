@@ -9,6 +9,9 @@ class Storage {
         const item = window.localStorage.getItem(key);
         return item;
     }
+    remove(key:string) {
+        localStorage.removeItem(key);
+    }
 }
 
 export default Storage;

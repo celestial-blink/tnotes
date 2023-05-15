@@ -164,9 +164,13 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 
+*test.mongodb
+
 # Windows shortcuts
 *.lnk
 
-mongodb.test.js
+*.test.js
+*.test.ts
+*.test.mjs
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,node
