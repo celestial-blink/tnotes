@@ -37,7 +37,7 @@ const Routes = createBrowserRouter([
                 element: <Task />
             },
             {
-                path: "note",
+                path: "note/:title?",
                 loader: loaderNote,
                 element: <Note />
             },

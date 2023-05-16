@@ -41,7 +41,6 @@ const Dashboard = () => {
 
     useEffect(() => {
         initialize();
-        console.log(dataIsDarkMode);
 
         return () => {
             logoutAbort?.abort();
@@ -66,13 +65,13 @@ const Dashboard = () => {
                 <nav className="custom__shadow rounded-full w-full bg-white md:flex-col md:w-52 md:rounded md:p-1 dark:bg-slate-700 dark:text-white">
                     <ul className="flex justify-between py-2 px-5 md:flex-col md:p-1">
                         <li>
-                            <Link to={"/"} className={`flex items-center gap-1 p-1 rounded hover:bg-slate-200 dark:hover:bg-slate-500 ${location.pathname === "/home" ? "bg-slate-500" : ""}`} title="inicio">
+                            <Link to={"/"} className={`flex items-center gap-1 p-1 rounded hover:bg-slate-200 dark:hover:bg-slate-500 ${location.pathname === "/home" ? "bg-slate-200 dark:bg-slate-500" : ""}`} title="inicio">
                                 <IconHome stroke={1.2} size={36} />
                                 <span className="hidden md:inline">Inicio</span>
                             </Link>
                         </li>
                         <li>
-                            <Link to={"/task"} className={`flex items-center gap-1 p-1 rounded hover:bg-slate-200 dark:hover:bg-slate-500 ${location.pathname === "/task" ? "bg-slate-500" : ""}`}>
+                            <Link to={"/task"} className={`flex items-center gap-1 p-1 rounded hover:bg-slate-200 dark:hover:bg-slate-500 ${location.pathname === "/task" ? "bg-slate-200 dark:bg-slate-500" : ""}`}>
                                 <IconChecklist stroke={1.2} size={36} />
                                 <span className="hidden md:inline">Tareas</span>
                             </Link>
@@ -84,19 +83,19 @@ const Dashboard = () => {
                                     <span className="hidden md:inline">Agregar</span>
                                 </summary>
                                 <menu className="as-menu absolute -top-14 -left-[200%] bg-white p-2 rounded w-max flex gap-3 md:-top-1 md:-left-[65%] md:flex-col dark:bg-slate-800">
-                                    <li> <Link to={"/note"} className="p-1">Agregar nota</Link> </li>
-                                    <li> <Link to={"/task"} className="p-1">Agregar tarea</Link> </li>
+                                    <li> <Link to={"/note"} state={{ add: true }} className="p-1">Agregar nota</Link> </li>
+                                    <li> <Link to={"/task"} state={{ add: true }} className="p-1">Agregar tarea</Link> </li>
                                 </menu>
                             </details>
                         </li>
                         <li>
-                            <Link to={"/note"} className={`flex items-center gap-1 p-1 rounded hover:bg-slate-200 dark:hover:bg-slate-500 ${location.pathname === "/note" ? "bg-slate-500" : ""}`}>
+                            <Link to={"/note"} className={`flex items-center gap-1 p-1 rounded hover:bg-slate-200 dark:hover:bg-slate-500 ${location.pathname === "/note" ? "bg-slate-200 dark:bg-slate-500" : ""}`}>
                                 <IconNotes stroke={1.2} size={36} />
                                 <span className="hidden md:inline">Notas</span>
                             </Link>
                         </li>
                         <li>
-                            <Link to={"/config"} className={`flex items-center gap-1 p-1 rounded hover:bg-slate-200 dark:hover:bg-slate-500 ${location.pathname === "/config" ? "bg-slate-500" : ""}`}>
+                            <Link to={"/config"} className={`flex items-center gap-1 p-1 rounded hover:bg-slate-200 dark:hover:bg-slate-500 ${location.pathname === "/config" ? "bg-slate-200 dark:bg-slate-500" : ""}`}>
                                 <IconSettings stroke={1.2} size={36} />
                                 <span className="hidden md:inline">Configuración</span>
                             </Link>

@@ -96,8 +96,8 @@ const Home = () => {
                 <h2 className="font-semibold text-xl">Agregar nuevo</h2>
                 <p>Agrega una nueva nota o una nueva tarea.</p>
                 <div className="flex gap-3">
-                    <Link to="/note/add" className="is__button__primary px-4 py-2 inline-block mt-4 rounded">Agregar nota</Link>
-                    <Link to="/task/add" className="is__button__primary px-4 py-2 inline-block mt-4 rounded">Agregar tarea</Link>
+                    <Link to="/note" state={{ add: true }} className="is__button__primary px-4 py-2 inline-block mt-4 rounded">Agregar nota</Link>
+                    <Link to="/task" state={{ add: true }} className="is__button__primary px-4 py-2 inline-block mt-4 rounded">Agregar tarea</Link>
                 </div>
             </section>
             <div className="flex gap-1 flex-col md:flex-row">
@@ -107,7 +107,7 @@ const Home = () => {
                         {
                             lastNotes !== null ?
                                 (lastNotes.length ?
-                                    lastNotes.map(item => <ItemLastNote _id={item._id} key={item._id} title={item.title} />)
+                                    lastNotes.map(item => <ItemLastNote key={item._id} title={item.title} />)
                                     : <li>Sin resultados</li>)
                                 : <>
                                     <SkeletonItemLastNote />
@@ -120,7 +120,7 @@ const Home = () => {
                     <div className="text-right">
                         {
                             lastNotes !== null ?
-                                (lastNotes.length ? <Link to="#" className="is__button__primary px-5 py-2 inline-block mt-4 rounded">Ver todos</Link> : null)
+                                (lastNotes.length ? <Link to="/note" className="is__button__primary px-5 py-2 inline-block mt-4 rounded">Ver todos</Link> : null)
                                 : <p className="p-6 w-[100px] text-right mt-4 inline-block rounded bg-slate-200 animate-pulse"></p>
                         }
                     </div>

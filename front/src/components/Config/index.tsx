@@ -166,7 +166,7 @@ const Config = () => {
             <section>
                 <div className="bg-white p-2 dark:bg-slate-700 dark:text-white">
                     <legend className="text-2xl text-cyan-900 dark:text-white">Mi cuenta</legend>
-                    <div className="flex items-center">
+                    <div className="flex items-center py-1 rounded bg-slate-100 dark:bg-slate-800">
                         <IconUserCircle size={120} stroke={1.2} />
                         <h4 className="font-bold">{name} <span className="block font-normal text-base">{email}</span> </h4>
                     </div>

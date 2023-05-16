@@ -1,5 +1,5 @@
 import { type MouseEvent, useEffect, useRef, useState } from "react";
-import { useLoaderData, useParams } from "react-router-dom";
+import { useLoaderData, useParams, useLocation } from "react-router-dom";
 import { format } from "date-fns";
 import { IconFilter, IconArrowDown, IconArrowUp, IconSquare } from "@tabler/icons-react";
 import Pagination from "@components/Pagination";
@@ -27,6 +27,7 @@ let filterAbort: null | AbortController = null;
 let changeSearchAbort: null | AbortController = null;
 
 const Task = () => {
+    const location = useLocation();
     const { is_pending = null } = useParams();
     const refFilter_details = useRef<HTMLDetailsElement>(null);
 
@@ -110,6 +111,8 @@ const Task = () => {
         if (is_pending && is_pending.toLowerCase() === "pending") {
             handleFilter({ onlyPending: true });
         }
+        if (location.state?.add) handleAdd();
+
     }
 
     useEffect(() => {
@@ -120,6 +123,7 @@ const Task = () => {
 
     useEffect(() => {
         initialize();
+
         loaderData.then((data) => { if (data.state) handleSetData(data.data); setLoadFilter(true) });
         return () => {
             filterAbort?.abort()

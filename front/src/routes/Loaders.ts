@@ -11,10 +11,10 @@ export const LoaderSession = async ({ request }: LoaderFunctionArgs) => {
     return loaderData;
 }
 
-export const loaderNote = async ({ request }: LoaderFunctionArgs) => {
+export const loaderNote = async ({ request, params }: LoaderFunctionArgs) => {
     const loaderData = filter({
         fields: ["_id", "title", "createdAt", "isDraft"],
-        query: ""
+        query: params?.title ? `title=${params.title}` : ""
     }, request.signal);
 
     return defer({ loaderData });

@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
 
 type TypeProps = {
-    title: string,
-    _id: string
+    title: string
 };
 
-const ItemLastNote = ({ title, _id }: TypeProps) => {
+const ItemLastNote = ({ title }: TypeProps) => {
     return (
-        <li className="border px-2 rounded flex justify-between items-center p-1 dark:bg-slate-800 dark:border-slate-600"> <span> <strong>Title:</strong> {title} </span> <Link to={`#${_id}`} className="is__button__primary px-2 py-1 inline-block rounded">Ver</Link> </li>
+        <li className="border px-2 rounded flex justify-between items-center p-1 dark:bg-slate-800 dark:border-slate-600">
+            <span> <strong>Title:</strong> {title} </span>
+            <Link to={`/note/${title}`} state={{ title }} className="is__button__primary px-2 py-1 inline-block rounded">Ver</Link>
+        </li>
     );
 };
 

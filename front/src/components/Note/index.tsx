@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import type { MouseEvent } from "react";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useLocation } from "react-router-dom";
 import { format } from "date-fns";
 import { IconFilter, IconArrowDown, IconArrowUp, IconSquare } from "@tabler/icons-react";
 
@@ -29,7 +29,7 @@ let filterAbort: null | AbortController = null;
 let changeSearchAbort: null | AbortController = null;
 
 const Note = () => {
-
+    const location = useLocation();
     const refFilter_details = useRef<HTMLDetailsElement>(null);
 
     const { data, dataTotal, filters, onFetchData, onSetFilter, setData, setDataTotal } = useNotes();
@@ -105,6 +105,11 @@ const Note = () => {
     const initialize = () => {
         filterAbort = new AbortController();
         changeSearchAbort = new AbortController();
+        if (location.state?.add) handleAdd();
+        if (location.state?.title?.trim()) {
+            console.log(location.state.title);
+
+        }
     }
 
     useEffect(() => {
@@ -125,7 +130,7 @@ const Note = () => {
     return (
         <section className="flex flex-col gap-1">
             <section className="rounded bg-white flex items-center gap-2 p-2 z-[2] md:gap-2 dark:bg-slate-700 dark:text-white">
-                <Search onChange={onChangeSearch} onSubmit={handleSubmit} />
+                <Search onChange={onChangeSearch} onSubmit={handleSubmit} defaultValue={location.state?.title ?? ""} />
                 <button className="is__button__primary py-2 px-4 rounded h-max" onClick={() => { handleAdd() }}>Nuevo</button>
             </section>
             <section className="rounded bg-white flex justify-end gap-5 p-2 relative dark:bg-slate-700 dark:text-white" >

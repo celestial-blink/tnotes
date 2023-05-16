@@ -8,10 +8,11 @@ type TypeChange = Array<{ title: string, _id: string }>;
 
 type TypeProps = {
     onSubmit?: (value: string) => void,
-    onChange?: (value: string) => Promise<TypeChange | null>
+    onChange?: (value: string) => Promise<TypeChange | null>,
+    defaultValue?: string
 };
 
-const Search = ({ onChange, onSubmit }: TypeProps) => {
+const Search = ({ onChange, onSubmit, defaultValue }: TypeProps) => {
 
     const refInput_search = useRef<HTMLInputElement>(null);
 
@@ -54,7 +55,7 @@ const Search = ({ onChange, onSubmit }: TypeProps) => {
 
     return (
         <form className="w-full gap-7 flex flex-col relative text-base z-[1]" onSubmit={handleOnSubmit}>
-            <input type="search" className="custom__focus__input p-2 pr-7 rounded w-full outline-none dark:bg-slate-800 dark:text-white dark:border-slate-400" ref={refInput_search} onChange={handleOnChange} placeholder="Buscar..." />
+            <input type="search" className="custom__focus__input p-2 pr-7 rounded w-full outline-none dark:bg-slate-800 dark:text-white dark:border-slate-400" ref={refInput_search} onChange={handleOnChange} defaultValue={defaultValue} placeholder="Buscar..." />
             <ul className="absolute top-full hidden bg-white z-[2] w-full border shadow-xl p-2 max-h-sm overflow-auto dark:bg-slate-800 dark:border-slate-600" onClick={handleClickItem}>
                 <li className="px-1 cursor-pointer text-sm bg-transparent hover:bg-slate-600" data-value={data} data-evref="handleClickItem">Buscar: {data}</li>
                 {
