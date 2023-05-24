@@ -174,3 +174,6 @@ $RECYCLE.BIN/
 *.test.mjs
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,node
+public/*
+!public/app
+public/app/*

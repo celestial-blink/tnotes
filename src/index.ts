@@ -8,14 +8,13 @@ import router from './router';
 import { connect } from './services/db';
 import initialize from './passport';
 import { logError, ornError, boomError, responseError } from './middleware/error';
-import { auth } from "./middleware/auth";
 import cookieParser from "cookie-parser";
 
 const app: Express = express();
 
 app.use(cors({
     origin(requestOrigin, callback) {
-        if (["http://localhost:1111"].includes(requestOrigin ?? "") || !requestOrigin) {
+        if (["http://localhost:1111", "http://localhost:1112"].includes(requestOrigin ?? "") || !requestOrigin) {
             callback(null, true);
         } else {
             callback(new Error('no permitido'));
@@ -25,6 +24,7 @@ app.use(cors({
 
 app.use(cookieParser());
 app.use(express.json());
+app.use(express.static(path.join(__dirname,'..','public', 'app')));
 
 connect().then(_ => {
     console.log("connected to mongo atlas!");
@@ -33,10 +33,12 @@ connect().then(_ => {
 });
 
 initialize();
-
 app.use(express.urlencoded({ extended: true }));
-
 router(app);
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname,'..','public', 'app', 'index.html'));
+});
+
 
 // app.use(auth);
 

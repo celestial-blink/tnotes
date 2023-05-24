@@ -7,7 +7,8 @@
     "dev": "nodemon",
     "debug": "nodemon && --inspect src/index.ts",
     "clean-port": "sudo kill $(sudo lsof -t -i:1112)",
-    "build": "tsc"
+    "build": "tsc",
+    "preview": "node dist/index.js"
   },
   "keywords": [],
   "author": "",

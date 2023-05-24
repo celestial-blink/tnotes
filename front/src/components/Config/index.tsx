@@ -166,7 +166,7 @@ const Config = () => {
             <section>
                 <div className="bg-white p-2 dark:bg-slate-700 dark:text-white">
                     <legend className="text-2xl text-cyan-900 dark:text-white">Mi cuenta</legend>
-                    <div className="flex items-center py-1 rounded bg-slate-100 dark:bg-slate-800">
+                    <div className="flex items-center py-1 rounded bg-slate-100 dark:bg-slate-600">
                         <IconUserCircle size={120} stroke={1.2} />
                         <h4 className="font-bold">{name} <span className="block font-normal text-base">{email}</span> </h4>
                     </div>
@@ -203,16 +203,16 @@ const Config = () => {
                     </form>
                 </div>
             </section>
-            <dialog className="shadow-md min-w-[350px]" ref={refDialogConfirm}>
+            <dialog className="shadow-md min-w-[350px] dark:bg-slate-800 dark:text-white" ref={refDialogConfirm}>
                 <form className="flex gap-4 flex-col" onSubmit={handleOnSubmitPass}>
                     <fieldset className="flex flex-col gap-2">
                         <label className="text-base font-semibold" htmlFor="current_password">Ingrese su contraseña</label>
-                        <input type="password" className="border rounded p-2" name="current_password" id="current_password" />
+                        <input type="password" className="border rounded p-2 dark:bg-slate-900" name="current_password" id="current_password" />
                         <p className="text-red-500 text-sm an" ref={refMessagePassError}></p>
                     </fieldset>
                     <div className="flex gap-2 justify-end">
-                        <button className="bg-slate-200 rounded text-slate-800 px-5 py-1" type="button" onClick={() => { refDialogConfirm.current?.close() }}>Cancel</button>
-                        <button className="bg-cyan-800 rounded text-white px-5 py-1">Continuar</button>
+                        <button className="bg-slate-200 rounded text-slate-800 px-5 py-1 dark:bg-slate-300" type="button" onClick={() => { refDialogConfirm.current?.close() }}>Cancel</button>
+                        <button className="bg-cyan-800 rounded text-white px-5 py-1 dark:bg-cyan-500">Continuar</button>
                     </div>
                 </form>
             </dialog>
