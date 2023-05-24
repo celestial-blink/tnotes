@@ -12,15 +12,7 @@ import cookieParser from "cookie-parser";
 
 const app: Express = express();
 
-app.use(cors({
-    origin(requestOrigin, callback) {
-        if (["http://localhost:1111", "http://localhost:1112"].includes(requestOrigin ?? "") || !requestOrigin) {
-            callback(null, true);
-        } else {
-            callback(new Error('no permitido'));
-        }
-    },
-}));
+app.use(cors());
 
 app.use(cookieParser());
 app.use(express.json());
