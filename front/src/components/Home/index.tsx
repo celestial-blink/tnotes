@@ -8,6 +8,8 @@ import { countPending } from "@api/Task";
 
 import ItemLastNote, { SkeletonItemLastNote } from "./_itemLastNote";
 
+import TitleMobile from "@components/TitleMobile";
+
 type TypeLastNotes = {
     _id: string,
     title: string
@@ -63,8 +65,9 @@ const Home = () => {
 
     return (
         <div className="flex flex-col text-slate-800 gap-1 text-base">
+            <TitleMobile />
             <section className="custom__shadow p-3 bg-white rounded dark:bg-slate-700 dark:text-white">
-                <h1 className="font-semibold text-2xl">Hola {name}</h1>
+                <h2 className="font-semibold text-2xl">Hola {name}</h2>
             </section>
             <section className="custom__shadow p-3 bg-white rounded dark:bg-slate-700 dark:text-white">
                 <h2 className="font-semibold text-xl">Mis actividades</h2>

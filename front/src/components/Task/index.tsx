@@ -18,6 +18,7 @@ import { type IResponse } from "@helpers/Fetch";
 import { filter, remove } from "@api/Task";
 
 import { IconSquareCheckFilled } from "@tabler/icons-react";
+import TitleMobile from "@components/TitleMobile";
 
 type TypeData = { result: TypeDataResult, total: TypeDataTotal };
 
@@ -134,6 +135,7 @@ const Task = () => {
     return (
         <>
             <section className="flex flex-col gap-1">
+                <TitleMobile />
                 <section className="rounded bg-white flex items-center gap-2 p-2 z-[2] md:gap-2 dark:bg-slate-700 dark:text-white">
                     <Search onChange={onChangeSearch} onSubmit={handleSubmit} />
                     <button className="is__button__primary py-2 px-4 rounded h-max" onClick={() => { handleAdd() }}>Nuevo</button>

@@ -54,7 +54,7 @@ const Pagination = ({ title, total, current, handlePagination }: IProps) => {
 
     return (
         <nav className="flex bg-white rounded p-2 gap-2 justify-between sticky top-0 text-cyan-900 flex-wrap z-[1] dark:bg-slate-700 dark:text-white">
-            <h1 className="text-2xl">Lista de {title}</h1>
+            <h2 className="text-2xl">Lista de {title}</h2>
             <div className="flex gap-3 shadow-sm">
                 <button className="bg-slate-100 rounded disabled:bg-slate-200 disabled:cursor-not-allowed dark:bg-slate-400 dark:text-white" onClick={handleClickPrevius} disabled={current < 2}>
                     <IconChevronLeft stroke={1.2} size={28} />

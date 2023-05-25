@@ -8,6 +8,7 @@ import { ContextUser } from "@views/Dashboard";
 import { update } from "@api/User";
 import { ValidatePassword } from "@api/Auth";
 import config from "@/config";
+import TitleMobile from "@components/TitleMobile";
 
 let abortSignalUpdate: AbortController | null = null;
 let timeoutFetchMessage: null | NodeJS.Timeout = null;
@@ -162,15 +163,16 @@ const Config = () => {
     }, []);
 
     return (
-        <>
-            <section>
-                <div className="bg-white p-2 dark:bg-slate-700 dark:text-white">
-                    <legend className="text-2xl text-cyan-900 dark:text-white">Mi cuenta</legend>
-                    <div className="flex items-center py-1 rounded bg-slate-100 dark:bg-slate-600">
-                        <IconUserCircle size={120} stroke={1.2} />
-                        <h4 className="font-bold">{name} <span className="block font-normal text-base">{email}</span> </h4>
-                    </div>
+        <div className="flex flex-col text-slate-800 gap-1 text-base">
+            <TitleMobile />
+            <section className="bg-white p-2 dark:bg-slate-700 dark:text-white">
+                <h2 className="text-2xl text-cyan-900 mb-2 dark:text-white">Mi cuenta</h2>
+                <div className="flex items-center py-1 rounded bg-slate-100 dark:bg-slate-600">
+                    <IconUserCircle size={120} stroke={1.2} />
+                    <h4 className="font-bold">{name} <span className="block font-normal text-base">{email}</span> </h4>
                 </div>
+            </section>
+            <section>
                 <div className="flex flex-col md:flex-row">
                     <form className="is__form w-full gap-3 flex flex-col text-lg bg-white dark:bg-slate-700 dark:text-white" onSubmit={handleOnSubmitName}>
                         <fieldset className="wrap__input gap-2">
@@ -216,7 +218,7 @@ const Config = () => {
                     </div>
                 </form>
             </dialog>
-        </>
+        </div>
     );
 }
 

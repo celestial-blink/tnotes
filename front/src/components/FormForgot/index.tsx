@@ -5,7 +5,7 @@ const FormForgot = () => {
         <>
         <div className="w-full flex flex-col items-center">
             <div className="h-16 w-16 rounded-full bg-cyan-900"></div>
-            <h1 className="text-cyan-900 text-4xl">Olvide mi contraseña</h1>
+            <h2 className="text-cyan-900 text-4xl">Olvide mi contraseña</h2>
         </div>
         <form className="is__form w-full gap-7 flex flex-col text-lg">
             <div className="w-full">
